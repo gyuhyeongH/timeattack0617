@@ -4,6 +4,11 @@ from user.models import UserType, UserLog
 # Register your models here.
 
 
-admin.site.register(UserModel)
+
 admin.site.register(UserType)
 admin.site.register(UserLog)
+
+@admin.register(UserModel)
+class CustomUserAdmin(admin.ModelAdmin):
+
+    list_display = ("email", )
