@@ -1,10 +1,21 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.response import Response
-from .models import UserLog
+from .models import UserLog, User, UserType
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.hashers import make_password
 
+
+class SignUpView(APIView):
+    def post(self, request):
+        user_type = request.data.get('user_type', None)
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        usertype = UserType.objects.get(user_type = user_type)
+        User(user_type=usertype, email=email, password=make_password(password)).save()
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class UserAPIView(APIView):
